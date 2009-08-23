@@ -206,6 +206,38 @@ end</code></pre>
 
 <p>Also see the builder method <a href='#builder_right_column_links'>right_column_links</a>.</p>
 
+<h4 id='link_to_new_in_index'>link_to_new_in_index?</h4>
+
+<p>The link to create a new record will be shown on the index view if there is a &#8216;new&#8217; action for the controller (whether via admin_assistant or otherwise). If you don&#8217;t want the link generated, define a helper method like this:</p>
+
+<pre><code>def link_to_new_in_index?
+  false
+end</code></pre>
+
+<h4 id='link_to_edit_in_index'>link_to_edit_in_index?</h4>
+
+<p>The edit link in the right column of each row will be shown if there is a &#8216;edit&#8217; action for the controller (whether via admin_assistant or otherwise). If you don&#8217;t want the link generated, define a helper method like this:</p>
+
+<pre><code>def link_to_edit_in_index?(blog_post)
+  false
+end</code></pre>
+
+<h4 id='link_to_delete_in_index'>link_to_delete_in_index?</h4>
+
+<p>The delete link in the right column of each row will be shown if there is a &#8216;destroy&#8217; action for the controller (whether via admin_assistant or otherwise). If you don&#8217;t want the link generated, define a helper method like this:</p>
+
+<pre><code>def link_to_delete_in_index?(blog_post)
+  false
+end</code></pre>
+
+<h4 id='link_to_show_in_index'>link_to_show_in_index?</h4>
+
+<p>The show link in the right column of each row will be shown if there is a &#8216;show&#8217; action for the controller (whether via admin_assistant or otherwise). If you don&#8217;t want the link generated, define a helper method like this:</p>
+
+<pre><code>def link_to_show_in_index?(blog_post)
+  false
+end</code></pre>
+
 <h3 id='partials'>Partials</h3>
 
 <h4 id='_after_indexhtmlerb'>_after_index.html.erb</h4>

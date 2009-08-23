@@ -154,6 +154,25 @@ end</code></pre>
 
 <p>The trade-off here is that customizing this behavior through a block is probably a little neater&#8212;fewer methods scattered all over your controller&#8212;but isn&#8217;t bound to the controller. So if you find yourself needing some convenience methods on, say, <code>ApplicationController</code>, you&#8217;ll be better off using a protected controller method.</p>
 
+<h4 id='before_render_for_index'>before_render_for_index</h4>
+
+<p>If defined on your controller, this hook is executed just before render takes place for the index action.</p>
+
+<pre><code>class Admin::BlogPostsController &lt; ApplicationController
+  layout &#39;admin&#39;
+
+  admin_assistant_for BlogPost
+
+  protected
+
+  # Blog post authors should not be visible if they have requested anonymity
+  def before_render_for_index
+    @index.records.each do |record|
+      record.author = nil if record.author.requested_anonymity?
+    end
+  end
+end</code></pre>
+
 <h4 id='helper_methods_and_partials'>Helper methods and partials</h4>
 
 <p>Other behaviors can be set by creating certain methods on the helper. Usually these behaviors have to do with presentation.</p>
