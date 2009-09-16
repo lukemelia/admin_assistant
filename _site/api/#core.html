@@ -2,33 +2,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>admin_assistant: API: Core</title>
-    <link rel="stylesheet" href="/css/main.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen">
   </head>
 
   <body>
     <div id="page_header">
-    <h1>admin_assistant</h1>
+    <h1><a href="../">admin_assistant</a></h1>
     <div class="nav">
-      <a href="/">Home</a> |
-      <a href="/getting_started.html">Getting&nbsp;started</a> |
-      <a href="/api/">API&nbsp;reference</a> |
-      <a href="/community.html">Community</a> |
-      <a href="/design_principles.html">Design&nbsp;principles</a> |
+      <a href="../screenshots.html">Screenshots</a> |
+      <a href="../getting_started.html">Getting&nbsp;started</a> |
+      <a href="../api/">API&nbsp;reference</a> |
+      <a href="../community.html">Community</a> |
+      <a href="../design_principles.html">Design&nbsp;principles</a> |
       <a href="http://groups.google.com/group/admin_assistant">Mailing&nbsp;list</a> |
       <a href="http://github.com/fhwang/admin_assistant">Github&nbsp;page</a>
     </div>
     </div>
     <div id="body">
     <h2>
-    <a href="/api/">API</a>
+    <a href="../api/">API</a>
     : Core
     </h2>
     <div class="subnav">
-      <a href="/api/core.html">Core</a> | 
-      <a href="/api/form.html">Form</a> |
-      <a href="/api/idx.html">Index</a> |
-      <a href="/api/search.html">Search</a> |
-      <a href="/api/show.html">Show</a>
+      <a href="../api/core.html">Core</a> | 
+      <a href="../api/destroy.html">Destroy</a> | 
+      <a href="../api/form.html">Form</a> |
+      <a href="../api/idx.html">Index</a> |
+      <a href="../api/search.html">Search</a> |
+      <a href="../api/show.html">Show</a>
     </div>
 
     <h3 id='includes'>Includes</h3>
@@ -90,6 +91,20 @@ end</code></pre>
 <pre><code>aa[:bookmarkable].polymorphic_types = [BlogPost, Comment, Product, User]    </code></pre>
 
 <p>If a column is a polymorphic association, admin_assistant will offer specific widgets for searching and editing this column. With <code>polymorphic_types</code> you can tell it what possible types the association can be set to.</p>
+
+<h3 id='model_methods'>Model methods</h3>
+
+<h4 id='name_for_admin_assistant'>name_for_admin_assistant</h4>
+
+<p>When dealing with associations, admin_assistant needs a convenient way to display a given record. By default, it will look for a method with the name <code>name</code>, <code>title</code>, <code>login</code>, or <code>username</code>. If you&#8217;d like to provide custom functionality across all admin_assistant controllers, define the method <code>name_for_admin_assistant</code> on the model.</p>
+
+<p>For example, let&#8217;s say you have a ProductCategory class with a field <code>category_name</code>. With the code below, any time a product category is referred to through an association, admin_assistant w</p>
+
+<pre><code>class ProductCategory &lt; ActiveRecord::Base
+  def name_for_admin_assistant
+    self.category_name
+  end
+end</code></pre>
     </div>
   </body>
 </html>

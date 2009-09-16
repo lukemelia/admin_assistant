@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>admin_assistant: API</title>
+    <title>admin_assistant: API: </title>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen">
   </head>
 
@@ -21,7 +21,7 @@
     <div id="body">
     <h2>
     <a href="../api/">API</a>
-    
+    : 
     </h2>
     <div class="subnav">
       <a href="../api/core.html">Core</a> | 
@@ -186,6 +186,18 @@ end</code></pre>
 <p>Often you can accomplish the same thing with a partial. For example, the functionality in the above example could also be accomplished with the following saved in <code>app/views/admin/users/_password_input.html.erb</code>.</p>
 
 <pre><code>&lt;%= password_field_tag(&quot;user[password]&quot;, user.password, :disabled =&gt; true) %&gt;</code></pre>
+
+<h4 id='model_methods'>Model methods</h4>
+
+<p>admin_assistant can also look for methods to be defined on models, themselves. This is generally for behaviors that would apply across all admin controllers.</p>
+
+<pre><code>class ProductCategory &lt; ActiveRecord::Base
+  def name_for_admin_assistant
+    self.category_name
+  end
+end</code></pre>
+
+<p>Generally speaking there won&#8217;t be many of these hooks, because in practice this can make the admin_assistant API sort of invasive. Unless your Rails project is 99% the admin interface, it&#8217;s going to get annoying to keep tripping over admin_assistant-specific hooks when you&#8217;re trying to write some front-facing code.</p>
     </div>
   </body>
 </html>
