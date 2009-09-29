@@ -22,7 +22,6 @@ Submissions of other themes are welcome.
 
 ### Configuring the core builder object
 
-<a name="builder_actions"></a>
 #### actions
 
 admin\_assistant uses the old-fashioned seven Rails actions: index, show, new/create, edit/update, and destroy. By default, you get all of them except destroy. To add destroy, you can simply append it to the `actions` method:
@@ -66,12 +65,3 @@ Overrides the default label for that column in index, search, and form views.
 
 If a column is a polymorphic association, admin\_assistant will offer specific widgets for searching and editing this column. With `polymorphic_types` you can tell it what possible types the association can be set to.
 
-### Model methods
-
-#### name\_for\_admin\_assistant
-
-admin
-
-By default, admin\_assistant looks for four different methods to figure ou
-
-This method should be 

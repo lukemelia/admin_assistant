@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>admin_assistant: API: Index</title>
+    <link rel="stylesheet" href="/css/main.css" type="text/css" media="screen">
+  </head>
+
+  <body>
+    <div id="page_header">
+    <h1>admin_assistant</h1>
+    <div class="nav">
+      <a href="/">Home</a> |
+      <a href="/getting_started.html">Getting&nbsp;started</a> |
+      <a href="/api/">API&nbsp;reference</a> |
+      <a href="/community.html">Community</a> |
+      <a href="/design_principles.html">Design&nbsp;principles</a> |
+      <a href="http://groups.google.com/group/admin_assistant">Mailing&nbsp;list</a> |
+      <a href="http://github.com/fhwang/admin_assistant">Github&nbsp;page</a>
+    </div>
+    </div>
+    <div id="body">
+    <h2>
+    <a href="/api/">API</a>
+    : Index
+    </h2>
+    <div class="subnav">
+      <a href="/api/core.html">Core</a> | 
+      <a href="/api/destroy.html">Destroy</a> | 
+      <a href="/api/form.html">Form</a> |
+      <a href="/api/idx.html">Index</a> |
+      <a href="/api/search.html">Search</a> |
+      <a href="/api/show.html">Show</a>
+    </div>
+
+    <p><img src='/img/blog_posts-index.png' alt='index' /></p>
+
+<p>The index is the action that lets you view all records, with pagination and sorting. To customize it by getting the index builder inside of your admin_assistant config:</p>
+
+<pre><code>class Admin::BlogPostsController &lt; ApplicationController
+  admin_assistant_for BlogPost do |a|
+    a.index do |index|
+      index.columns :user, :title
+      index.sort_by &#39;published_at desc&#39;
+    end
+  end
+end</code></pre>
+
+<h3 id='index_config_options'>Index config options</h3>
+
+<h4 id='actions'>actions</h4>
+
+<pre><code>index.actions[&#39;All&#39;] = {:all =&gt; &#39;1&#39;}</code></pre>
+
+<p>Adds more links to the upper-right hand-corner. By default there are two links there: &#8220;Search&#8221;, and &#8220;New [model name]&#8221;. If you have any other specific links to add, you can add them with index.actions, and they will be added to the right of those default two links.</p>
+
+<h4 id='conditions'>conditions</h4>
+
+<p>Specifies additional SQL that can restrict the records shown in the index view. This can be a simple string:</p>
+
+<pre><code>index.conditions &quot;deleted_at is null&quot;</code></pre>
+
+<p>It can also be a block that will be passed the params hash:</p>
+
+<pre><code>index.conditions do |params|
+  &quot;deleted_at is null&quot; unless params[:all]
+end</code></pre>
+
+<p>This can also be accomplished with a protected controller method <code>conditions_for_index</code>; see below.</p>
+
+<h4 id='columns'>columns</h4>
+
+<pre><code>index.columns :user, :title</code></pre>
+
+<p>If called, restricts which columns are shown. By default admin_assistant will try to show all columns on the DB table, which will probably be too much if your table has a lot of columns.</p>
+
+<p>Can also be used to add model methods that aren&#8217;t database fields.</p>
+
+<h4 id='header'>header</h4>
+
+<pre><code>index.header do |params|
+  if params[:all]
+    &quot;Blog posts (all)&quot;
+  else
+    &quot;Blog posts (unpublished)&quot;
+  end
+end</code></pre>
+
+<p>For customization the text at the top of the page; takes a block with params as its argument</p>
+
+<h4 id='include'>include</h4>
+
+<pre><code>index.include :users</code></pre>
+
+<p>Accepts one or more association names to be eagerly loaded by ActiveRecord.</p>
+<a name='builder_right_column_links' />
+<h4 id='right_column_links'>right_column_links</h4>
+
+<p>By default, there are two links on the right-hand side of the row for each model: &#8220;Edit&#8221; and &#8220;Show&#8221;. You can add new ones by appending to <code>right_column_links</code>:</p>
+
+<pre><code>index.right_column_links &lt;&lt; lambda { |blog_post|
+  [
+    &quot;New comment for this blog post&quot;,
+    {:controller =&gt; &#39;/admin/comments&#39;, :action =&gt; &#39;new&#39;,
+     :comment =&gt; {:blog_post_id =&gt; blog_post.id }}
+  ]
+}</code></pre>
+
+<p>The lambda should receive the model and return a two-element array: The first element should be the text of the link and the second should be the URL parameters for that link.</p>
+
+<p>See also the helper method <a href='#helper_extra_right_column_links_for_index'>extra_right_column_links_for_index</a>.</p>
+
+<h4 id='search'>search</h4>
+
+<pre><code>index.search :id, :title</code></pre>
+
+<p>Shortcut to Search <a href='/api/search.html#builder_columns'><code>columns</code></a> .</p>
+
+<h4 id='sort_by'>sort_by</h4>
+
+<p>Sets the default sorting of records, which will be used unless the user has specified sorting by clicking any of the sort headers. This can be a SQL string:</p>
+
+<pre><code>index.sort_by &#39;published_at desc, id asc&#39;</code></pre>
+
+<p>It can also just be a belongs-to association:</p>
+
+<pre><code>index.sort_by :user</code></pre>
+
+<p>In the case of a belongs-to association, by default it will search for fields called <code>name</code>, <code>title</code>, <code>login</code>, or <code>username</code> on the associated model and use that.</p>
+
+<h4 id='total_entries'>total_entries</h4>
+
+<pre><code>index.total_entries = do
+  BlogPost.cached_count
+end</code></pre>
+
+<p>This block will be called during pagination to provide the total number of records. This can come in handy if you have a huge number of records and are finding the count(*) SQL statement too expensive.</p>
+
+<h3 id='column_config_options'>Column config options</h3>
+
+<p>There are also configurations that can be applied to specific columns in the index view.</p>
+
+<h4 id='image_size'>image_size</h4>
+
+<pre><code>index[:image].image_size = &#39;300x500&#39;</code></pre>
+
+<p>By default, <a href='http://thoughtbot.com/projects/paperclip'>Paperclip</a> and <a href='http://www.kanthak.net/opensource/file_column/'>FileColumn</a> image files are rendered at full-size in the index. To restrict their size, pass a size string to <code>image_size</code>.</p>
+
+<h4 id='link_to_args'>link_to_args</h4>
+
+<pre><code>class Admin::BlogPostsController &lt; ApplicationController
+  layout &#39;admin&#39;
+
+  admin_assistant_for BlogPost do |aa|
+    aa.index[:user].link_to_args do |blog_post|
+      {:controller =&gt; &#39;admin/users&#39;, :action =&gt; &#39;edit&#39;,
+       :id =&gt; blog_post.user_id }
+    end
+  end
+end</code></pre>
+
+<p>If you&#8217;d like this column to link somewhere from the index view, set this with a block that returns a hash for <code>url_for</code> when called.</p>
+
+<p>Note that this block takes the base record as its argument, not the value of the specific column or association. In the example above, the base model is BlogPost, so the block is receiving a blog post, not the associated user.</p>
+
+<h3 id='controller_methods'>Controller methods</h3>
+
+<h4 id='conditions_for_index'>conditions_for_index</h4>
+
+<pre><code>def conditions_for_index
+  &quot;deleted_at is null&quot; unless params[:all]
+end</code></pre>
+
+<p>Specifies additional SQL that can restrict the records shown in the index view.</p>
+
+<p>Can also be set via <code>index.conditions</code>; see <code>conditions</code> above.</p>
+
+<h3 id='helper_methods'>Helper methods</h3>
+
+<h4 id='column_html_for_index'>[column]_html_for_index</h4>
+
+<pre><code>def title_html_for_index(blog_post)
+  &quot;TITLE #{blog_post.title.capitalize}&quot;
+end</code></pre>
+
+<p>If this method exists on the helper, it will be used to render the HTML shown in each row for the column in question. It takes the model as its only argument.</p>
+<a name='helper_extra_right_column_links_for_index' />
+<h4 id='extra_right_column_links_for_index'>extra_right_column_links_for_index</h4>
+
+<p>By default, there are two links on the right-hand side of the row for each model: &#8220;Edit&#8221; and &#8220;Show&#8221;. You can add new ones by returning them from <code>extra_right_column_links_for_index</code>:</p>
+
+<pre><code>def extra_right_column_links_for_index(blog_post)
+  link_to(
+    &#39;New comment&#39;,
+    {
+      :controller =&gt; &#39;admin/comments&#39;, :action =&gt; &#39;new&#39;,
+      :comment =&gt; {:blog_post_id =&gt; blog_post.id}
+    }
+  )
+end</code></pre>
+
+<p>Also see the builder method <a href='#builder_right_column_links'>right_column_links</a>.</p>
+
+<h3 id='partials'>Partials</h3>
+
+<h4 id='_after_indexhtmlerb'>_after_index.html.erb</h4>
+
+<p>If this partial is present, it will be rendered after the entire index HTML.</p>
+
+<h4 id='_before_indexhtmlerb'>_before_index.html.erb</h4>
+
+<p>If this partial is present, it will be rendered before the entire index HTML.</p>
+    </div>
+  </body>
+</html>

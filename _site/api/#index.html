@@ -1,15 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>admin_assistant: API: </title>
+    <title>admin_assistant: API</title>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen">
   </head>
 
   <body>
     <div id="page_header">
-    <h1><a href="../">admin_assistant</a></h1>
+    <h1>admin_assistant</h1>
     <div class="nav">
-      <a href="../screenshots.html">Screenshots</a> |
+      <a href="../">Home</a> |
       <a href="../getting_started.html">Getting&nbsp;started</a> |
       <a href="../api/">API&nbsp;reference</a> |
       <a href="../community.html">Community</a> |
@@ -21,7 +21,7 @@
     <div id="body">
     <h2>
     <a href="../api/">API</a>
-    : 
+    
     </h2>
     <div class="subnav">
       <a href="../api/core.html">Core</a> | 
@@ -154,25 +154,6 @@ end</code></pre>
 
 <p>The trade-off here is that customizing this behavior through a block is probably a little neater&#8212;fewer methods scattered all over your controller&#8212;but isn&#8217;t bound to the controller. So if you find yourself needing some convenience methods on, say, <code>ApplicationController</code>, you&#8217;ll be better off using a protected controller method.</p>
 
-<h4 id='before_render_for_index'>before_render_for_index</h4>
-
-<p>If defined on your controller, this hook is executed just before render takes place for the index action.</p>
-
-<pre><code>class Admin::BlogPostsController &lt; ApplicationController
-  layout &#39;admin&#39;
-
-  admin_assistant_for BlogPost
-
-  protected
-
-  # Blog post authors should not be visible if they have requested anonymity
-  def before_render_for_index
-    @index.records.each do |record|
-      record.author = nil if record.author.requested_anonymity?
-    end
-  end
-end</code></pre>
-
 <h4 id='helper_methods_and_partials'>Helper methods and partials</h4>
 
 <p>Other behaviors can be set by creating certain methods on the helper. Usually these behaviors have to do with presentation.</p>
@@ -186,18 +167,6 @@ end</code></pre>
 <p>Often you can accomplish the same thing with a partial. For example, the functionality in the above example could also be accomplished with the following saved in <code>app/views/admin/users/_password_input.html.erb</code>.</p>
 
 <pre><code>&lt;%= password_field_tag(&quot;user[password]&quot;, user.password, :disabled =&gt; true) %&gt;</code></pre>
-
-<h4 id='model_methods'>Model methods</h4>
-
-<p>admin_assistant can also look for methods to be defined on models, themselves. This is generally for behaviors that would apply across all admin controllers.</p>
-
-<pre><code>class ProductCategory &lt; ActiveRecord::Base
-  def name_for_admin_assistant
-    self.category_name
-  end
-end</code></pre>
-
-<p>Generally speaking there won&#8217;t be many of these hooks, because in practice this can make the admin_assistant API sort of invasive. Unless your Rails project is 99% the admin interface, it&#8217;s going to get annoying to keep tripping over admin_assistant-specific hooks when you&#8217;re trying to</p>
     </div>
   </body>
 </html>
