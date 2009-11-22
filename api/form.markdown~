@@ -79,7 +79,7 @@ By default, [Paperclip] and [FileColumn] image files are rendered at full-size i
 
     form[:publish].input = :check_box
 
-Currently supports `:check_box`, `:select`, `:text_area`, and `:us_state`. `:us_state` will render a drop-down with U.S. states.
+Currently supports `:check_box`, `:select`, and `:us_state`. `:check_box` is most useful for virtual columns right now. `:us_state` will render a drop-down with U.S. states.
 
 #### nilify\_link
 

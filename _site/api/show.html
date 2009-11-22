@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>admin_assistant: API{% if page.title != '' %}: {{ page.title }}{% endif% %}</title>
+    <title>admin_assistant: API: Show</title>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen">
   </head>
 
@@ -22,7 +22,7 @@
     <div id="body">
     <h2>
     <a href="../api/">API</a>
-    {% if page.title != '' %}: {{page.title}}{% endif %}
+    : Show
     </h2>
     <div class="subnav">
       <a href="../api/core.html">Core</a> | 
@@ -33,7 +33,17 @@
       <a href="../api/show.html">Show</a>
     </div>
 
-    {{ content }}
+    <p>Show configuration affects what is displayed in a show page, e.g. <code>/admin/blog_posts/show/5</code>.</p>
+
+<h3 id='show_config_options'>Show config options</h3>
+
+<h4 id='columns'>columns</h4>
+
+<pre><code>admin_assistant_for BlogPost do |aa|
+  aa.show.columns :user, :title, :body
+end</code></pre>
+
+<p>Shows only these columns in the show page.</p>
     </div>
   </body>
 </html>
