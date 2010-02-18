@@ -118,6 +118,16 @@ end</code></pre>
     self.category_name
   end
 end</code></pre>
+
+<h4 id='sort_value_for_admin_assistant'>sort_value_for_admin_assistant</h4>
+
+<p>When showing associated records, admin_assistant will sort by the method <code>sort_value_for_admin_assistant</code> if it&#8217;s defined on the model. This comes in handy if you want to specify sorting on form drop-downs for belongs-to associations.</p>
+
+<pre><code>class Appointment &lt; ActiveRecord::Base
+  def sort_value_for_admin_assistant
+    self.time
+  end
+end</code></pre>
     </div>
   </body>
 </html>
