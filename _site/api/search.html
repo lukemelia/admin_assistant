@@ -100,6 +100,19 @@ end</code></pre>
 
 <p>To turn this off, set <code>comparators</code> to false.</p>
 
+<h4 id='conditions'>conditions</h4>
+
+<pre><code>search[:has_short_title].field_type = :boolean
+search[:has_short_title].conditions do |has_short_title|
+  if has_short_title
+    &quot;length(title) &lt; 10&quot;
+  elsif has_short_title == false
+    &quot;length(title) &gt;= 10&quot;
+  end
+end</code></pre>
+
+<p>To be used with a virtual column in search. The block should return a SQL fragment to add to the final query, or nil to not change anything.</p>
+
 <h4 id='match_text_fields_for_association'>match_text_fields_for_association</h4>
 
 <pre><code>search[:user].match_text_fields_for_association</code></pre>
