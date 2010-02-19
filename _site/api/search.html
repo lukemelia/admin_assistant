@@ -100,6 +100,12 @@ end</code></pre>
 
 <p>To turn this off, set <code>comparators</code> to false.</p>
 
+<h4 id='compare_to_range'>compare_to_range</h4>
+
+<pre><code>search[:price].compare_to_range = true</code></pre>
+
+<p>If you want to offer a ranged search, set <code>compare_to_range</code> to true. This will render two fields for greater-than and less-than in the search.</p>
+
 <h4 id='conditions'>conditions</h4>
 
 <pre><code>search[:has_short_title].field_type = :boolean
