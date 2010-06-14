@@ -28,7 +28,7 @@
     
     <h2>Quick start</h2>
     
-    <p><em>This document assumes you are a beginning Rails user; if you are very familiar with Rails you might want to check out our <a href='./quick_start.html'>quick start</a>.</em></p>
+    <p><em>This document assumes you are highly familiar with Ruby and Rails; if you are a beginning Rails user you might want to start with our <a href='/tutorial.html'>tutorial</a>.</em></p>
 
 <p>1) First, install the plugin from Github.</p>
 
@@ -38,25 +38,17 @@
 
 <pre><code>./script/plugin install git://github.com/mislav/will_paginate.git</code></pre>
 
-<p>3) If you don&#8217;t have any admin controllers in your Rails project yet, you probably need to create a separate admin layout. Create a file called <code>app/views/layouts/admin.html.erb</code> like this:</p>
+<p>3) admin_assistant comes packaged with standard CSS and Javascript that you should include in whatever layout your admin controllers will be using. You&#8217;ll also need to make sure to include prototype.js, effects.js, and controls.js, if you&#8217;re not including them already.</p>
 
 <pre><code>&lt;html&gt;
   &lt;head&gt;
     &lt;%= javascript_include_tag(&quot;prototype&quot;, &quot;effects&quot;, &quot;controls&quot;) %&gt;
     &lt;%= admin_assistant_includes %&gt;
   &lt;/head&gt;
-  &lt;body&gt;
-    &lt;%=yield %&gt;
-  &lt;/body&gt;
+  ...
 &lt;/html&gt;</code></pre>
 
-<p>If you&#8217;ve already created an admin layout, you should add the javascript references, and the call to <code>admin_assistant_includes</code>. This includes the standard CSS and Javascript that are packed with admin_assistant.</p>
-
-<p>4) Create your new admin controller for a pre-existing model. We&#8217;ll be using a BlogPost as an example but you should be able to use any model in your Rails app.</p>
-
-<pre><code>./script/generate controller admin/blog_posts</code></pre>
-
-<p>5) Open <code>app/controllers/admin/blog_posts_controller.rb</code> and set it up to use the admin layout and to use admin_assistant for the BlogPost model:</p>
+<p>4) Setup an admin controller by attaching it to a model and using the admin layout:</p>
 
 <pre><code>class Admin::BlogPostsController &lt; ApplicationController
   layout &#39;admin&#39;
@@ -64,13 +56,9 @@
   admin_assistant_for BlogPost
 end</code></pre>
 
-<p>6) If you were already running your Rails app with <code>./script/server</code> etc, you should restart it.</p>
-
-<p>7) Visit <code>/admin/blog_posts</code> in your browser and you&#8217;ll see something like this:</p>
+<p>That&#8217;s it for the basic version. You should now be able to go to /admin/blog_posts in your app and search, paginate, create, and edit blog posts.</p>
 
 <p><img src='./img/blog_posts-index.png' alt='index' /></p>
-
-<p>You can now search, paginate, create, and edit blog posts.</p>
 
 <p>Depending on the model you&#8217;re using, you might notice a few things:</p>
 

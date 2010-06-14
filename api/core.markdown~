@@ -72,14 +72,6 @@ If a column is a polymorphic association, admin\_assistant will offer specific w
     
 If the column is a date or time, this will use the given strftime format for displaying the column in index and shows views.
 
-### Helper methods
-
-#### \[column\]\_value
-
-Determines what value is passed to form inputs, index views, etc, for the individual column. This is most useful for a virtual column.
-
-
-
 ### Model methods
 
 #### name\_for\_admin\_assistant

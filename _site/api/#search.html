@@ -75,12 +75,7 @@ end</code></pre>
 
 <p>If you don&#8217;t specify any columns, the search form is simply one field, and whatever text is entered in that field will be compared to every text and string field on the database table. If there are other fields you&#8217;d like the default search to compare with, you can add them using <code>default_search_matches_on</code>. For example, to give users the ability to search by ID:</p>
 
-<pre><code>  index.search.default_search_matches_on :id</code></pre>
-
-<p>You can also pass in SQL fragments:</p>
-
-<pre><code>  index.search.default_search_matches_on \
-        &quot;concat_ws(&#39; &#39;, users.first_name, users.last_name)&quot;</code></pre>
+<pre><code>  index.search.default_search_includes :id</code></pre>
 
 <h3 id='column_config_options'>Column config options</h3>
 
